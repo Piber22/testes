@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Uniformes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="uniformes.css">
+    <link rel="stylesheet" href="uniformes-pecas.css">
+</head>
+<body>
+
+<main>
+    <!-- Cabeçalho -->
+    <header class="header">
+        <a href="../rouparia.html" class="logo-link">
+            <img src="../../img/icone.png" alt="Logo Manserv" class="logo">
+        </a>
+        <h1>Scrubs</h1>
+    </header>
+
+    <!-- Navegação por abas -->
+    <nav class="abas-nav">
+        <button class="aba-btn ativa" data-aba="autorizados">Autorizados</button>
+        <button class="aba-btn"       data-aba="ci">CI</button>
+        <!-- Futuras abas: adicionar aqui -->
+        <!-- <button class="aba-btn" data-aba="aba3">Aba 3</button> -->
+        <!-- <button class="aba-btn" data-aba="aba4">Aba 4</button> -->
+    </nav>
+
+    <!-- ── ABA: AUTORIZADOS ─────────────────────────────────── -->
+    <div id="aba-autorizados" class="aba-conteudo ativa">
+
+        <section id="controles">
+            <div class="busca-container">
+                <input type="text" id="buscaInput" placeholder="🔍 Buscar funcionário...">
+                <button id="limparSelecaoBtn" style="display:none;">
+                    Limpar Seleção (<span id="contadorSelecao">0</span>)
+                </button>
+            </div>
+
+            <div class="acoes-multiplas" id="acoesMultiplas" style="display:none;">
+                <button id="entregaMultiplaBtn" class="btn-entrega-multipla">
+                    📦 Entregar Uniformes (<span id="contadorEntrega">0</span>)
+                </button>
+                <button id="devolucaoMultiplaBtn" class="btn-devolucao-multipla">
+                    ✅ Receber Devoluções (<span id="contadorDevolucao">0</span>)
+                </button>
+            </div>
+        </section>
+
+        <section id="listaFuncionarios">
+            <div id="funcionariosContainer">
+                <p style="text-align:center; color:#777;">Carregando funcionários...</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ── ABA: CI ───────────────────────────────────────────── -->
+    <div id="aba-ci" class="aba-conteudo">
+
+        <section id="controles-ci">
+            <div class="ci-form">
+                <div class="ci-campo">
+                    <label for="ciNomeColaborador">Nome do Colaborador</label>
+                    <input type="text" id="ciNomeColaborador" placeholder="Digite o nome completo...">
+                </div>
+                <div class="ci-campo">
+                    <label for="ciNomeEnfermeiro">Enfermeiro(a) Responsável</label>
+                    <input type="text" id="ciNomeEnfermeiro" placeholder="Digite o nome do(a) enfermeiro(a)...">
+                </div>
+                <button id="ciEntregarBtn" class="btn-entrega-multipla" disabled>
+                    📦 Registrar Entrega
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Futuras abas: seguir o mesmo padrão
+    <div id="aba-aba3" class="aba-conteudo"> ... </div>
+    <div id="aba-aba4" class="aba-conteudo"> ... </div>
+    -->
+
+</main>
+
+<!-- Modal: Seleção de Tamanho (Jaleco + Calça) -->
+<div id="modalTamanho" class="modal">
+    <div class="modal-content">
+        <h2>Selecione os Tamanhos</h2>
+        <p id="nomeFuncionarioTamanho"></p>
+
+        <div id="listaTamanhosContainer">
+            <!-- Preenchido dinamicamente -->
+        </div>
+
+        <div class="modal-buttons">
+            <button id="cancelarTamanhoBtn" class="btn-cancelar">Cancelar</button>
+            <button id="avancarAssinaturaBtn" class="btn-avancar" disabled>Avançar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Assinatura -->
+<div id="modalAssinatura" class="modal">
+    <div class="modal-content modal-assinatura">
+        <h2>Assinatura</h2>
+        <p id="infoAssinatura"></p>
+
+        <div class="canvas-container">
+            <canvas id="canvasAssinatura"></canvas>
+        </div>
+
+        <div class="modal-buttons">
+            <button id="limparAssinaturaBtn" class="btn-limpar">🔄 Limpar</button>
+            <button id="cancelarAssinaturaBtn" class="btn-cancelar">Cancelar</button>
+            <button id="confirmarAssinaturaBtn" class="btn-confirmar">✓ Confirmar</button>
+        </div>
+
+        <div id="progressoAssinaturas" style="display:none; margin-top:15px; text-align:center; color:#aaa;">
+            Assinatura <span id="assinaturaAtual">1</span> de <span id="assinaturaTotal">1</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Confirmação de Pendência -->
+<div id="modalConfirmacao" class="modal">
+    <div class="modal-content modal-confirmacao">
+        <div class="confirmacao-icon">⚠️</div>
+        <h2>Atenção</h2>
+        <p id="mensagemConfirmacao"></p>
+
+        <div class="modal-buttons">
+            <button id="cancelarConfirmacaoBtn" class="btn-cancelar">Cancelar</button>
+            <button id="prosseguirConfirmacaoBtn" class="btn-confirmar">Sim, Prosseguir</button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-spinner"></div>
+    <p>Salvando...</p>
+</div>
+
+<footer class="footer">
+    <p>© 2025 <strong>Manserv - Equipe HSANA</strong>. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Ordem de carregamento importa: config → dados → lista → modais → ci → envio → offline -->
+<script src="uniformes-config.js"></script>
+<script src="uniformes-dados.js"></script>
+<script src="uniformes-lista.js"></script>
+<script src="uniformes-modais.js"></script>
+<script src="uniformes-ci.js"></script>
+<script src="uniformes-envio.js"></script>
+<script src="offline-queue.js"></script>
+</body>
+</html>
